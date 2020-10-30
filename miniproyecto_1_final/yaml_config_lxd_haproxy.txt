@@ -1,0 +1,31 @@
+config: {}
+networks: []
+storage_pools: []
+profiles: []
+cluster:
+  server_name: haproxyUbuntu
+  enabled: true
+  member_config:
+  - entity: storage-pool
+    name: local
+    key: source
+    value: ""
+    description: '"source" property for storage pool "local"'
+  cluster_address: 192.168.100.6:8443
+  cluster_certificate: |
+    -----BEGIN CERTIFICATE-----
+    MIICDjCCAZWgAwIBAgIQRuj3cg+l39j0YxmAe58XNTAKBggqhkjOPQQDAzA4MRww
+    GgYDVQQKExNsaW51eGNvbnRhaW5lcnMub3JnMRgwFgYDVQQDDA9yb290QHdlYjFV
+    YnVudHUwHhcNMjAxMDI2MjM1MjM5WhcNMzAxMDI0MjM1MjM5WjA4MRwwGgYDVQQK
+    ExNsaW51eGNvbnRhaW5lcnMub3JnMRgwFgYDVQQDDA9yb290QHdlYjFVYnVudHUw
+    djAQBgcqhkjOPQIBBgUrgQQAIgNiAATmFWY2gao/q5o8guTKtaHHSiwMTjAHfjuK
+    DTviYv0wQek5FOlLSVrAglGG9Q6AnRfQRkKg9tJQufzsy808l1NksifOdYh143rd
+    5v94w3MWt2RaaTlcV2k2Oq+dWx9tSkmjZDBiMA4GA1UdDwEB/wQEAwIFoDATBgNV
+    HSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMC0GA1UdEQQmMCSCCndlYjFV
+    YnVudHWHBH8AAAGHEAAAAAAAAAAAAAAAAAAAAAEwCgYIKoZIzj0EAwMDZwAwZAIw
+    JqzgVmRttO+30CUO1vV2X7tkw0pBytLgPjLvTx/q3gOuTMznV4T6nWVjTIm+mH15
+    AjAA5b/vbAEKAIoCKn+A5KhzydVc/rP+gcd+gdp9jexU0hckeV5iCkfrQ9ik0Cpz
+    tjo=
+    -----END CERTIFICATE-----
+  server_address: 192.168.100.5:8443
+  cluster_password: miniproyecto1
