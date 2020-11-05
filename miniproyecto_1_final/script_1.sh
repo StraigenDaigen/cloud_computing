@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
+
+#Se actualiza el SO
 apt update && apt upgrade
 
+#Se instala lxd
 sudo snap install lxd
+#Se agrega vagrant al grupo lxd
 sudo gpasswd -a vagrant lxd
 
+#Se almacena el contenido del certificado en una variable
 certification=$(</vagrant/servidor.crt)
 echo "$certification"
+
+#Se crea nuevamente un archivo yaml, el cual se le suministra la informacion del cluster; nombre del nodo actual, configuracion de almacenamiento
+#la direccion del cluster al que se va a unir, el certificado, que en este caso es la variable definida previamente. se agrega la direccion del nodo actual y 
+#la contraseña del cluster
 cat <<TEST> /home/vagrant/clusterconf.yaml
 
 config: {}
@@ -30,19 +39,22 @@ $certification
 
 TEST
 
-
+#se verifica el contenido del archivo yaml
 cat /home/vagrant/clusterconf.yaml
 sleep 10
 
+
 echo "agregando certificado al preseed"
+#Se agrega el archivo al preseed de lxd
 cat /home/vagrant/clusterconf.yaml | lxd init --preseed
 
 echo "el nodo 3 ha sido ha sido agregado al Cluster 1 sin errores"
 
-
+#Se crea el contenedor haproxy y se le indica al sistema que se creara en la VM haproxyUbuntuV2
 lxc launch ubuntu:18.04 haproxy --target haproxyUbuntuV2
 sleep 10
 
+# Se actualiza el SO, se instala haproxy y se habilita dentro del contenedor haproxy
 lxc exec haproxy -- apt update && apt upgrade
 lxc exec haproxy -- apt install haproxy -y
 
@@ -55,7 +67,20 @@ lxc exec haproxy -- systemctl enable haproxy
 
 echo "Configurando Archivo de Configuración Haproxy"
 
+#Se crea el archivo que va a tener la configuracion del balanceador de carga.
 touch /home/vagrant/haproxy.cfg
+
+#se agrega el contenido de la configuracion al archivo haproxy.cfg
+
+#Se definen los logs, es decir la respuesta del sistema, para saber en que estado está. notice valida si ha habido un cambio en algun server y lo envia en el log
+#Se Definen los grupos y usuarios, temas de seguridad con los certificados SSL
+#Luego se asignan las paginas que el sistema debe ejecutar en caso de errores.
+#Luego se define el modelo del balanceador de carga, el cual es usa el algoritmo roundrobin
+#Adicionalmente el sistema utiliza un tipo de equilibrio de carga "http".
+# Los check de los server significan que se deben hacer comprobaciones de estado de esos servidores en back-end
+
+
+#
 cat <<TEST> /home/vagrant/haproxy.cfg
 global
 	log /dev/log	local0

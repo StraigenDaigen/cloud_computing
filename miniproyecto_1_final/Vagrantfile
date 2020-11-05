@@ -1,9 +1,16 @@
 
+
+#Se configura la manera en que se instalaran las maquinas virtuales, este se caso de usa la version 2 del archivo config
 Vagrant.configure("2") do |config|
+   #Se define el nombre de la maquina virtual y el nombre del nodo, esto es importante porque la idea es usar el mismo para armar el cluster
    config.vm.define :web1UbuntuV2 do |node|
+      #Se Utiliza la siguiente maquina virtual del respositorio de vagrant cloud
       node.vm.box = "bento/ubuntu-20.04"
+      #Se configura la dirección ip que usara esta maquina virtual. 
       node.vm.network :private_network, ip: "192.168.100.8"
+      #Se define el aprovisionamiento, que en este caso se hace con Shell y se agrega la ruta del archivo deseado.
       node.vm.provision "shell", path: "script_2.sh"
+      #Se define el nombre de la Maquina Virtual
       node.vm.hostname = "web1UbuntuV2"
    end
    config.vm.define :web2UbuntuV2 do |node|
