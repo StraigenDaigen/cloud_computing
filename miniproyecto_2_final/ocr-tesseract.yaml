@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ocr_ns
+  name: ocrns
   labels:
     name: staging
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: ocr_ns
+  namespace: ocrns
   labels:
     app: ocr
   name: ocr
@@ -29,7 +29,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: ocr_ns
+  namespace: ocrns
   labels:
     app: ocr
   name: ocr
